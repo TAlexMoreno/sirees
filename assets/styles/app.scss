@@ -1,0 +1,30 @@
+@import "../../node_modules/@materializecss/materialize/sass/materialize.scss";
+body {
+    background-color: #eee;
+}
+.fullH {
+    height: 100vh;
+}
+
+.quarter {
+    width: 40vw;
+    @media screen and (max-width: 600px) {
+        width: 95vw;
+    }
+}
+
+.fullCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noMargin {
+    margin: 0!important;
+}
+
+.card.sff {
+    .card-action {
+        padding: 8px 24px;
+    }
+}

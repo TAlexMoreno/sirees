@@ -1,0 +1,7 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="row noMargin fullCenter fullH">
+        <div data-controller="login-form" data-login-form-csrf-value="{{ csrf_token('authenticate') }}" class="quarter"></div>
+    </div>
+{% endblock %}
