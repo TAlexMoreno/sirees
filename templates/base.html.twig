@@ -15,6 +15,9 @@
         {% endblock %}
     </head>
     <body>
+        {% if not (noSidenav|default(false)) and app.user %}
+            <ul data-controller="sidenav" data-sidenav-user-data-value="{{app.user.serial|json_encode}}"></ul>
+        {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>

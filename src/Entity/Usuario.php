@@ -187,4 +187,18 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getNombreCompleto(): string
+    {
+        return "{$this->nombres} {$this->apellidoPaterno} {$this->apellidoMaterno}";
+    }
+
+    public function serial(): array
+    {
+        return [
+            "username" => $this->username,
+            "nombreCompleto" => $this->getNombreCompleto(),
+            "correo" => $this->correo
+        ];
+    }
 }
