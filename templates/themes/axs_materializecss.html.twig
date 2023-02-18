@@ -1,0 +1,9 @@
+{% extends "form_div_layout.html.twig" %}
+
+{% block form_row -%}
+    <div class="input-field col {{form.vars.attr.col|default("s12")}}">
+        {{- form_widget(form) -}}
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row %}

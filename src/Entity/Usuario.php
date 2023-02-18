@@ -47,6 +47,9 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(length: 18, nullable: true)]
+    private ?string $curp = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -200,5 +203,17 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
             "nombreCompleto" => $this->getNombreCompleto(),
             "correo" => $this->correo
         ];
+    }
+
+    public function getCurp(): ?string
+    {
+        return $this->curp;
+    }
+
+    public function setCurp(?string $curp): self
+    {
+        $this->curp = $curp;
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\RoleHierarchyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,9 +13,18 @@ class AdminController extends AbstractController
         return;
     }
 
-    #[Route("/admin", name: "admin_index")]
-    public function index()
+    #[Route("/admin/usuarios", name: "admin_usuarios")]
+    public function usuarios()
     {
-        return $this->render("admin/index.html.twig");
+        return $this->render("admin/usuarios.html.twig");
+    }
+    #[Route("/admin/usuarios/nuevo/{type}", name:"admin_usuarios_new")]
+    public function usuarioNew(string $type)
+    {
+        $form = $this->createForm("App\\Form\\Type\\".ucfirst($type)."Type");
+        return $this->render("admin/usuarios_nuevo.html.twig", [
+            "form" => $form->createView(),
+            "type" => ucfirst($type)
+        ]);
     }
 }
