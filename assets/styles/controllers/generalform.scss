@@ -1,0 +1,12 @@
+.general-form {
+    .card-action {
+        transition: max-height 1s ease-in-out;
+    }
+    &.loading {
+        .card-action {
+            max-height: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    }
+}

@@ -13,8 +13,8 @@ export default class extends Controller {
         this.element.innerHTML = /*html*/ `
             <li>
                 <div class="user-view">
-                    <div class="background"><img src="https://via.placeholder.com/300x200/333333" alt="fondo"/></div>
-                    <a href="#user"><img src="https://via.placeholder.com/70x70/ffffff" alt="profile" class="circle"/></a>
+                    <div class="background"><img loading="lazy" src="https://via.placeholder.com/300x200/333333" alt="fondo"/></div>
+                    <a href="#user"><img loading="lazy" src="https://via.placeholder.com/70x70/ffffff" alt="profile" class="circle"/></a>
                     <a href="#name"><span class="white-text">${this.userDataValue.nombreCompleto}</span></a>
                     <a href="#email"><span class="white-text">${this.userDataValue.correo}</span></a>
                 </div>
@@ -40,28 +40,7 @@ export default class extends Controller {
         }
     }
     async getLinks(){
-        return [
-            {
-                path: "/",
-                label: "Inicio",
-                name: "app_home",
-                icon: "home",
-                minimumRole: "ROLE_USER"
-            },
-            {
-                path: "/admin/usuarios",
-                label: "Usuarios",
-                name: "admin_users",
-                icon: "group",
-                minimumRole: "ROLE_ADMIN"
-            },
-            {
-                path: "/logout",
-                label: "Cerrar sesión",
-                name: "app_logout",
-                icon: "logout",
-                minimumRole: "ROLE_USER"
-            }
-        ]
+        let response = await fetch("/ajaxUtils/rutas");
+        return await response.json();
     }
 }

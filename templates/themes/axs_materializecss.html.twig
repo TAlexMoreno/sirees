@@ -7,3 +7,15 @@
         {{- form_errors(form) -}}
     </div>
 {%- endblock form_row %}
+
+{% block materialize_text_row -%}
+    <div class="input-field col {{form.vars.attr.col|default("s12")}}">
+        {{- form_widget(form) -}}
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {% if form.vars.helperData %}
+            <span class="helper-text" data-error="{{form.vars.helperData.errorText}}" data-success="{{form.vars.helperData.successText}}">{{form.vars.helperData.helperText}}</span>
+        {% endif %}
+        
+    </div>
+{%- endblock materialize_text_row %}

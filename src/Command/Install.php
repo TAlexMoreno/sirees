@@ -2,7 +2,9 @@
 
 namespace App\Command;
 
+use App\Entity\Ruta;
 use App\Entity\Usuario;
+use App\Repository\RutaRepository;
 use App\Repository\UsuarioRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +22,7 @@ class Install extends Command
     public function __construct(
         private UsuarioRepository $ur,
         private EntityManagerInterface $em,
+        private RutaRepository $rrepo,
         private UserPasswordHasherInterface $hasher
     ) {
         parent::__construct();
@@ -34,6 +37,22 @@ class Install extends Command
         } else {
             $output->writeln("<info>Usuario root encontrado ({$root->getCorreo()})</info>");
         }
+
+        $output->writeln("Creando rutas");
+        foreach ($this->getRutas() as $ruta) {
+            if ($this->rrepo->findOneBy(["id" => $ruta["id"]])) continue;
+            $r = new Ruta();
+            $r->setId($ruta["id"])
+                ->setPath($ruta["path"])
+                ->setLabel($ruta["label"])
+                ->setName($ruta["name"])
+                ->setIcon($ruta["icon"])
+                ->setMinimumRole($ruta["minimumRole"])
+                ->setParent($ruta["parent"] ? $this->rrepo->find($ruta["parent"]) : null)
+            ;
+            $this->rrepo->save($r, true);
+        }
+
         return Command::SUCCESS;
     }
     private function createRoot(InputInterface $input, OutputInterface $output, QuestionHelper $helper)
@@ -77,5 +96,38 @@ class Install extends Command
         $this->em->persist($root);
         $this->em->flush();
         $output->writeln("<info>Usuario root creado!</info>");
+    }
+
+    public function getRutas(): array 
+    {
+        return [
+            [
+                "id" => 1,
+                "path" => "/",
+                "label" => "Inicio",
+                "name" => "app_home",
+                "icon" => "home",
+                "minimumRole" => "ROLE_USER",
+                "parent" => null
+            ],
+            [
+                "id" => 2,
+                "path" => "/admin/usuarios",
+                "label" => "Usuarios",
+                "name" => "admin_users",
+                "icon" => "group",
+                "minimumRole" => "ROLE_ADMIN",
+                "parent" => null
+            ],
+            [
+                "id" => 3,
+                "path" => "/logout",
+                "label" => "Cerrar sesión",
+                "name" => "app_logout",
+                "icon" => "logout",
+                "minimumRole" => "ROLE_USER",
+                "parent" => null
+            ]
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Usuario;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -56,28 +57,27 @@ class UsuarioRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->save($user, true);
     }
 
-//    /**
-//     * @return Usuario[] Returns an array of Usuario objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Usuario
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getNewMatricula(): string
+    {
+        $qb = $this->createQueryBuilder("u")
+            ->where("u.roles like :role")
+            ->andWhere("u.createdAt > :thisYear")
+            ->setParameters([
+                "role" => "%ROLE_ALUMNO%",
+                "thisYear" => $this->getFirstMomentOfYear()
+            ])
+            ->orderBy("u.username", "DESC")
+            ->setMaxResults(1)
+        ;
+        /** @var ?Usuario $last */
+        $last = $qb->getQuery()->getOneOrNullResult();
+        $now = new DateTime();
+        $next = !$last ? 1 : intval(substr($last->getUsername(), -6, 6)) + 1;
+        return $now->format("Y").str_pad($next, 6, "0", STR_PAD_LEFT);
+    }
+    public function getFirstMomentOfYear(): DateTime {
+        $now = new DateTime();
+        $firstMomento = new DateTime("{$now->format("Y")}-01-01 00:00:00");
+        return $firstMomento;
+    }
 }

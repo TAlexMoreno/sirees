@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UsuarioRepository;
+use App\Utils\TiposUsuario;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,7 +17,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
+    public ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -47,8 +48,11 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(length: 18, nullable: true)]
+    #[ORM\Column(length: 18, nullable: true, unique: true)]
     private ?string $curp = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $telefono = null;
 
     public function getId(): ?int
     {
@@ -215,5 +219,30 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         $this->curp = $curp;
 
         return $this;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(?string $telefono): self
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getType(): TiposUsuario {
+        switch($this->roles[0]){
+            case "ROLE_ROOT": return TiposUsuario::ROOT;
+            case "ROLE_ADMIN": return TiposUsuario::ADMIN;
+            case "ROLE_SECRETARIA": return TiposUsuario::SECRETARIA;
+            case "ROLE_PROFESOR": return TiposUsuario::PROFESOR;
+            case "ROLE_ALUMNO": return TiposUsuario::ALUMNO;
+        }
+    }
+    public function getFormType(): string {
+        return "App\\Form\\Type\\".$this->getType()->value."Type";
     }
 }

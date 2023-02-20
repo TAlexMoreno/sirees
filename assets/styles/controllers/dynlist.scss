@@ -1,0 +1,109 @@
+$cPrincipal: #444;
+$cSecundario: #444;
+table.dynlist {
+    thead {
+        tr {
+            border-bottom: 2px solid rgba(0,0,0,.30);
+        }
+    }
+    td, th {
+        padding: 5px 5px;
+        height: 42px;
+    }
+    .btn {
+        padding: 0;
+        aspect-ratio: 1;
+        height: 30px;
+        line-height: 30px;
+        i {
+            font-size: 1rem;
+        }
+    }
+    tfoot {
+        tr {
+            border-bottom: none;
+            td .wrapper {
+                display: flex;
+                justify-items: center;
+                align-items: center;
+                gap: 5px;
+                .pagination {
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-right: 20px;
+                }
+            }
+            td div:nth-child(1) {
+                margin-left: 20px;
+            }
+        }
+    }
+    .multiselect-check {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 42px;
+        label {
+            height: inherit;
+        }
+        span {
+            height: 10px;
+        }
+    }
+}
+.tabs.dynlist {
+    border-bottom: 1px solid $cPrincipal;
+    .indicator {
+        height: 3px;
+        background-color: $cPrincipal;
+    }
+    .active {
+        color: white !important;
+        background-color: $cSecundario !important;
+    }
+    a {
+        color: $cSecundario;
+    }
+}
+.omnisearch {
+    .omnisearchInput {
+        color: white !important;
+        &:focus, &:focus + .omnisearchClose {
+            color: #444 !important;
+        }
+        .omnisearchClose {
+            color: white !important;
+        }
+    }
+}
+
+.vanillaContextSISEGOBMenu {
+    position: absolute;
+    background-color: $cPrincipal;
+    display: flex;
+    flex-direction: column;
+    .menuItemSeparator {
+        height: 1px;
+        background-color: white;
+    }
+    .menuItem {
+        display: flex;
+        flex-direction: row;
+        padding: 2px 10px;
+        align-items: center;
+        cursor: pointer;
+        transition: all ease-in-out 200ms;
+        &:hover{
+            background-color: $cSecundario;
+        }
+        * {
+            color: white;
+        }
+        .menuItemIcon {
+            font-size: 0.9rem;
+            padding-right: 10px;
+        }
+    }
+}

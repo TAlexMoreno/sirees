@@ -1,23 +1,18 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div data-controller="new-user" class="row">
+    <div class="row">
         <div class="col s12">
             <div class="card"
                 data-controller="general-form" 
                 data-general-form-url-value="/API/usuario" 
-                data-general-method-value="POST"
+                data-general-method-value="PUT"
                 data data-general-form-token-value="{{app.session.get("apiToken")}}" 
             >
-                <div class="card-content row noMargin">
-                    <span class="card-title">Nuevo {{type}}</span>
+                <div class="card-content">
                     {{form(form)}}
-                </div>
-                <div class="card-action right-align">
-                    <button type="submit" class="btn">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
