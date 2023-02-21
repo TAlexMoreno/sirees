@@ -116,7 +116,7 @@ class Install extends Command
                 "label" => "Usuarios",
                 "name" => "admin_users",
                 "icon" => "group",
-                "minimumRole" => "ROLE_ADMIN",
+                "minimumRole" => "ROLE_SECRETARIA",
                 "parent" => null
             ],
             [

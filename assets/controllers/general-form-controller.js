@@ -1,12 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
-import { Exception } from "sass";
 import "../styles/controllers/generalform.scss";
 
 export default class extends Controller {
     static values = {
         url: String,
         token: String,
-        method: {type: String, value: "POST"}
+        method: {type: String, default: "POST"}
     }
     initialize(){
         if (!["POST", "GET", "PUT", "DELETE"].includes(this.methodValue)) {

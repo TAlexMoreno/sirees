@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UsuarioRepository;
 use App\Utils\TiposUsuario;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,6 +55,14 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $telefono = null;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Programa::class, orphanRemoval: true)]
+    private Collection $programas;
+
+    public function __construct()
+    {
+        $this->programas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -244,5 +254,35 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     }
     public function getFormType(): string {
         return "App\\Form\\Type\\".$this->getType()->value."Type";
+    }
+
+    /**
+     * @return Collection<int, Programa>
+     */
+    public function getProgramas(): Collection
+    {
+        return $this->programas;
+    }
+
+    public function addPrograma(Programa $programa): self
+    {
+        if (!$this->programas->contains($programa)) {
+            $this->programas->add($programa);
+            $programa->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrograma(Programa $programa): self
+    {
+        if ($this->programas->removeElement($programa)) {
+            // set the owning side to null (unless already changed)
+            if ($programa->getCreatedBy() === $this) {
+                $programa->setCreatedBy(null);
+            }
+        }
+
+        return $this;
     }
 }

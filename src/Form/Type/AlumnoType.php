@@ -16,13 +16,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AlumnoType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options){
+        /** @var Usuario $usr*/
+        $usr = $builder->getData();
         $builder->add("username", MaterializeTextType::class, [
             "label" => "Matricula",
-            "data" => $options["matriculaProvisional"],
+            "data" => $usr?->getUsername() ?? $options["matriculaProvisional"],
             "attr" => [
                 "readonly" => true,
             ],
-            "helperData" => new MaterializeTextTypeHelper("Este campo es provisional y sera rellenado automaticamente a la hora del guardado")
+            "helperData" => new MaterializeTextTypeHelper(!$usr ? "Este campo es provisional y sera rellenado automaticamente a la hora del guardado" : "")
         ]);
         $builder->add("nombres", TextType::class, [
             "attr" => [
