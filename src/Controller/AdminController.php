@@ -22,14 +22,14 @@ class AdminController extends AbstractController
     #[Route("/admin/usuarios", name: "admin_usuarios")]
     public function usuarios()
     {
-        $this->denyAccessUnlessGranted(RolesUsuarios::SECRETARIA);
+        $this->denyAccessUnlessGranted(RolesUsuarios::SECRETARIA->value);
         return $this->render("admin/usuarios.html.twig");
     }
 
     #[Route("/admin/usuarios/{username}", name:"admin_usuario_show")]
     public function usuarioShow(String $username, UsuarioRepository $urepo)
     {
-        $this->denyAccessUnlessGranted(RolesUsuarios::SECRETARIA);
+        $this->denyAccessUnlessGranted(RolesUsuarios::SECRETARIA->value);
         $user = $urepo->findOneBy(["username" => $username]);
         if (!$user) {
             throw $this->createNotFoundException("Usuario no encontrado");
@@ -45,7 +45,7 @@ class AdminController extends AbstractController
     #[Route("/admin/usuarios/nuevo/{type}", name:"admin_usuarios_new")]
     public function usuarioNew(string $type, UsuarioRepository $urepo)
     {
-        $this->denyAccessUnlessGranted(RolesUsuarios::SECRETARIA);
+        $this->denyAccessUnlessGranted(RolesUsuarios::SECRETARIA->value);
         $form = $this->createForm("App\\Form\\Type\\".ucfirst($type)."Type", null, [
             "matriculaProvisional" => $urepo->getNewMatricula(TiposUsuario::from(ucfirst($type)))
         ]);
